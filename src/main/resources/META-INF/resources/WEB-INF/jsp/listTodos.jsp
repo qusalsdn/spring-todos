@@ -4,7 +4,7 @@
     </head>
     <body>
         <div>
-            Welcome to the qusalsdn!
+            Welcome to the ${name}!
         </div>
         <div>
             Your Todos are ${todos}
