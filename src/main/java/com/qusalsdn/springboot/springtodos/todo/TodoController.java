@@ -43,5 +43,3 @@ public class TodoController {
         return "redirect:list-todos";
     }
 }
-
-강의 썸네일
