@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 public class TodoService {
@@ -24,5 +25,10 @@ public class TodoService {
 
     public void addTodo(String userName, String description, LocalDate targetDate, Boolean done) {
         todos.add(new Todo(todoCount++, userName, description, targetDate, done));
+    }
+
+    public void deleteById(int id) {
+        Predicate<Todo> predicate = todo -> todo.getId() == id; // Todo에 매칭되는 id가 있는지 묻는 predicate를 정의
+        todos.removeIf(predicate); // removeIf는 위의 조건에 매칭되면 Todo를 삭제
     }
 }
