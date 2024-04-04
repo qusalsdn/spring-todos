@@ -15,9 +15,15 @@ import java.util.function.Function;
 public class SpringSecurityConfiguration {
     @Bean
     public InMemoryUserDetailsManager createUserDetailsManager() {
+        UserDetails userDetails1 = createNewUser("qusalsdn", "0000");
+        UserDetails userDetails2 = createNewUser("qusalsdn123", "5555");
+        return new InMemoryUserDetailsManager(userDetails1, userDetails2);
+    }
+
+    private UserDetails createNewUser(String userName, String password) {
         Function<String, String> passwordEncoder = input -> passwordEncoder().encode(input); // 람다 함수로 username, password를 passwordEncoder 함수를 통하여 BCryptPasswordEncoder로 변환
-        UserDetails userDetails = User.builder().passwordEncoder(passwordEncoder).username("qusalsdn").password("0000").roles("USER", "ADMIN").build();
-        return new InMemoryUserDetailsManager(userDetails);
+        UserDetails userDetails = User.builder().passwordEncoder(passwordEncoder).username(userName).password(password).roles("USER", "ADMIN").build();
+        return userDetails;
     }
 
     @Bean
