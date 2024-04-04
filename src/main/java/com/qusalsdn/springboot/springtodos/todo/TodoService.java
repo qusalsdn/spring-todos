@@ -14,7 +14,7 @@ public class TodoService {
     private static int todoCount = 1;
 
     static {
-        todos.add(new Todo(todoCount++, "qusalsdn", "Learn AWS", LocalDate.now().plusYears(1), false));
+        todos.add(new Todo(todoCount++, "qusalsdn", "Get AWS Certified", LocalDate.now().plusYears(1), false));
         todos.add(new Todo(todoCount++, "qusalsdn", "Learn DevOps", LocalDate.now().plusYears(2), false));
         todos.add(new Todo(todoCount++, "qusalsdn", "Learn Full Stack Devlopment", LocalDate.now().plusYears(3), false));
     }
@@ -35,5 +35,10 @@ public class TodoService {
     public Todo findById(int id) {
         Predicate<Todo> predicate = todo -> todo.getId() == id;
         return todos.stream().filter(predicate).findFirst().get();
+    }
+
+    public void updateTodo(Todo todo) {
+        deleteById(todo.getId());
+        todos.add(todo);
     }
 }
