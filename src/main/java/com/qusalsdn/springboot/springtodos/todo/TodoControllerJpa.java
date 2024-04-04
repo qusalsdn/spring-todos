@@ -1,5 +1,6 @@
 package com.qusalsdn.springboot.springtodos.todo;
 
+import com.qusalsdn.springboot.springtodos.TodoRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,19 +15,21 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import java.time.LocalDate;
 import java.util.List;
 
-//@Controller
+@Controller
 @SessionAttributes("name") // 세션을 이용하면 다른 페이지로 넘어가도 값을 유지할 수 있다.
-public class TodoController {
+public class TodoControllerJpa {
     private TodoService todoService;
+    private TodoRepository todoRepository;
 
-    public TodoController(TodoService todoService) {
+    public TodoControllerJpa(TodoService todoService, TodoRepository todoRepository) {
         this.todoService = todoService;
+        this.todoRepository = todoRepository;
     }
 
     @RequestMapping("list-todos")
     public String listAllTodos(ModelMap model) {
         String userName = getLoggedInUserName(model);
-        List<Todo> todos = todoService.findByUserName(userName);
+        List<Todo> todos = todoRepository.findByUserName(userName);
         model.put("todos", todos);
         return "listTodos";
     }
