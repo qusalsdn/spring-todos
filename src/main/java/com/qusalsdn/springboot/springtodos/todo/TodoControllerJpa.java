@@ -18,11 +18,9 @@ import java.util.List;
 @Controller
 @SessionAttributes("name") // 세션을 이용하면 다른 페이지로 넘어가도 값을 유지할 수 있다.
 public class TodoControllerJpa {
-    private TodoService todoService;
     private TodoRepository todoRepository;
 
-    public TodoControllerJpa(TodoService todoService, TodoRepository todoRepository) {
-        this.todoService = todoService;
+    public TodoControllerJpa(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
 
@@ -51,19 +49,21 @@ public class TodoControllerJpa {
         if (result.hasErrors()) {
             return "todo";
         }
-        todoService.addTodo(getLoggedInUserName(model), todo.getDescription(), todo.getTargetDate(), false);
+        String userName = getLoggedInUserName(model);
+        todo.setUserName(userName);
+        todoRepository.save(todo);
         return "redirect:list-todos";
     }
 
     @RequestMapping("delete-todo")
     public String deleteTodo(@RequestParam int id) {
-        todoService.deleteById(id);
+        todoRepository.deleteById(id);
         return "redirect:list-todos";
     }
 
     @RequestMapping(value = "update-todo", method = RequestMethod.GET)
     public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
-        Todo todo = todoService.findById(id);
+        Todo todo = todoRepository.findById(id).get();
         model.addAttribute("todo", todo);
         return "todo";
     }
@@ -75,7 +75,7 @@ public class TodoControllerJpa {
         }
         String userName = getLoggedInUserName(model);
         todo.setUserName(userName);
-        todoService.updateTodo(todo);
+        todoRepository.save(todo);
         return "redirect:list-todos";
     }
 }
