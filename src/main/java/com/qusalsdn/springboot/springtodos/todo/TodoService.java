@@ -31,4 +31,9 @@ public class TodoService {
         Predicate<Todo> predicate = todo -> todo.getId() == id; // Todo에 매칭되는 id가 있는지 묻는 predicate를 정의
         todos.removeIf(predicate); // removeIf는 위의 조건에 매칭되면 Todo를 삭제
     }
+
+    public Todo findById(int id) {
+        Predicate<Todo> predicate = todo -> todo.getId() == id;
+        return todos.stream().filter(predicate).findFirst().get();
+    }
 }
